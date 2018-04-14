@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <h2>Votes</h2>
+        <ul>
+            {% for vote in object_list %}
+                <li><a href="/votes/{{ vote.id }}/">{{ vote }}</a></li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
