@@ -1,13 +1,14 @@
-from django.views.generic import ListView, DetailView
+from rest_framework import generics
 
 from .models import Vote
+from .serializers import VoteSerializer
 
 
-class VoteList(ListView):
-    model = Vote
-    template_name = 'vote_list.html'
+class VoteList(generics.ListCreateAPIView):
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
 
 
-class VoteDetail(DetailView):
-    model = Vote
-    template_name = 'vote.html'
+class VoteDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer

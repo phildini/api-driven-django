@@ -12,6 +12,8 @@ name = "pypi"
 [packages]
 
 django = "*"
+djangorestframework = "*"
+requests = "*"
 
 
 [requires]
