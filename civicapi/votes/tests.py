@@ -43,6 +43,17 @@ class VoteViewTests(TestCase):
 
     def test_vote_list(self):
         factory = APIRequestFactory()
+        request = factory.post('/votes/', {'subject': 'More Django'}, format='json')
+        response = VoteList.as_view()(request)
+        assert 201 == response.status_code
+
+    def test_vote_detail(self):
+        factory = APIRequestFactory()
         request = factory.post('/votes/', {'subject': 'More Django'})
         response = VoteList.as_view()(request)
         assert 201 == response.status_code
+        request = factory.get('/votes/')
+        get_response = VoteDetail.as_view()(request, pk=response.data['id'])
+        assert 200 == get_response.status_code
+        assert response.data == get_response.data
+

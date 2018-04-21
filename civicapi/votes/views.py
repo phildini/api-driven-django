@@ -11,9 +11,10 @@ from .serializers import VoteSerializer
 
 
 class VoteList(generics.ListCreateAPIView):
+    # Order here matters
     renderer_classes = (
-        TemplateHTMLRenderer,
         JSONRenderer,
+        TemplateHTMLRenderer,
         BrowsableAPIRenderer,
     )
     template_name = "vote_list.html"
@@ -28,9 +29,10 @@ class VoteList(generics.ListCreateAPIView):
 
 
 class VoteDetail(generics.RetrieveUpdateDestroyAPIView):
+    # Order here matters
     renderer_classes = (
-        TemplateHTMLRenderer,
         JSONRenderer,
+        TemplateHTMLRenderer,
         BrowsableAPIRenderer,
     )
     template_name = "vote.html"
