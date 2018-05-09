@@ -13,16 +13,24 @@ from .models import Vote
 from .serializers import VoteSerializer
 
 
-class VoteList(generics.ListCreateAPIView):
-    renderer_classes = (
+class VoteAPIMixin(object):
+    renderer_classes = [
         JSONRenderer,
         TemplateHTMLRenderer,
-        BrowsableAPIRenderer,
-    )
-    template_name = "vote_list.html"
-    queryset = Vote.objects.all()
+    ]
+    queryset = Vote.objects.all().order_by('vote_taken')
     serializer_class = VoteSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_renderers(self):
+        renderer_classes = self.renderer_classes
+        if self.request.user.is_staff:
+            renderer_classes += [BrowsableAPIRenderer]
+        return [renderer() for renderer in renderer_classes]
+
+
+class VoteList(VoteAPIMixin, generics.ListCreateAPIView):
+    template_name = "vote_list.html"
 
     def create(self, request, *args, **kwargs):
         response = super(VoteList, self).create(request, *args, **kwargs)
@@ -30,15 +38,6 @@ class VoteList(generics.ListCreateAPIView):
             return redirect('/votes/')
         return response
 
-class VoteDetail(generics.RetrieveUpdateDestroyAPIView):
-    renderer_classes = (
-        JSONRenderer,
-        TemplateHTMLRenderer,
-        BrowsableAPIRenderer,
-    )
+class VoteDetail(VoteAPIMixin, generics.RetrieveUpdateDestroyAPIView):
     template_name = "vote.html"
-    queryset = Vote.objects.all()
-    serializer_class = VoteSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
-
 
