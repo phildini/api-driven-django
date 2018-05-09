@@ -7,6 +7,7 @@ from rest_framework.renderers import (
     JSONRenderer,
     TemplateHTMLRenderer,
 )
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Vote
 from .serializers import VoteSerializer
@@ -21,6 +22,7 @@ class VoteList(generics.ListCreateAPIView):
     template_name = "vote_list.html"
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def create(self, request, *args, **kwargs):
         response = super(VoteList, self).create(request, *args, **kwargs)
@@ -37,5 +39,6 @@ class VoteDetail(generics.RetrieveUpdateDestroyAPIView):
     template_name = "vote.html"
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
