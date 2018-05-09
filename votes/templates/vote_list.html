@@ -1,6 +1,22 @@
 <html>
     <body>
         <h2>Votes</h2>
+        <form action="/votes/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>
+                <label for="subject">Subject</label> <input id="subject" name="subject" type="text">
+            </p>
+            <p>
+                <label for="vote_taken">Vote taken</label> <input id="vote_taken" name="vote_taken" type="datetime-local">
+            </p>
+            <p>
+                <label for="ayes">Ayes</label> <input id="ayes" name="ayes" type="number">
+            </p>
+            <p>
+                <label for="nays">Nays</label> <input id="nays" name="nays" type="number">
+            </p>
+            <input type="submit" value="Save">
+        </form>
         <ul>
             {% for vote in results %}
                 <li><a href="/votes/{{ vote.id }}/">{{ vote.subject }} - {{ vote.ayes }}/{{ vote.nays }} on {{ vote.vote_taken }}</a></li>
