@@ -28,3 +28,14 @@ class VoteList(generics.ListCreateAPIView):
             return redirect('/votes/')
         return response
 
+class VoteDetail(generics.RetrieveUpdateDestroyAPIView):
+    renderer_classes = (
+        JSONRenderer,
+        TemplateHTMLRenderer,
+        BrowsableAPIRenderer,
+    )
+    template_name = "vote.html"
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
+
+
