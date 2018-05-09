@@ -1,7 +1,13 @@
+import json
 from django.test import TestCase
 from django.utils import timezone
 
+from rest_framework.test import APIRequestFactory
+
 from .models import Vote
+from .serializers import VoteSerializer
+from .views import VoteList
+
 
 class VoteModelTests(TestCase):
 
@@ -34,3 +40,15 @@ class VoteSerializerTests(TestCase):
         assert vote.subject == serialized['subject']
         assert vote.ayes == serialized['ayes']
         assert vote.nays == serialized['nays']
+
+
+class VoteViewTests(TestCase):
+
+    def test_vote_list(self):
+        vote = Vote.objects.create(subject='More Django!')
+        factory = APIRequestFactory()
+        request = factory.get('/votes/', format='json')
+        response = VoteList.as_view()(request)
+        assert 200 == response.status_code
+        response.render()
+        assert vote.subject == json.loads(response.content)[0]['subject']
