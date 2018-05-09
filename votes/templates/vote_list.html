@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <h2>Votes</h2>
+        <ul>
+            {% for vote in results %}
+                <li><a href="/votes/{{ vote.id }}/">{{ vote.subject }} - {{ vote.ayes }}/{{ vote.nays }} on {{ vote.vote_taken }}</a></li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

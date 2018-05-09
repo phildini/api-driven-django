@@ -51,4 +51,4 @@ class VoteViewTests(TestCase):
         response = VoteList.as_view()(request)
         assert 200 == response.status_code
         response.render()
-        assert vote.subject == json.loads(response.content)[0]['subject']
+        assert vote.subject == json.loads(response.content)['results'][0]['subject']
